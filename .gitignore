@@ -1,0 +1,13 @@
+# 密钥绝不进仓库
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 编辑器
+.vscode/
+.idea/
