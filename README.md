@@ -67,7 +67,7 @@ python -m py_compile l01_what_is_agent/step3_agent_loop.py && echo OK
 
 ## 进度
 
-- [x] L01 认识 Agent（step1/2/3 已写完）
+- [ ] L01 认识 Agent（step1/2/3 待手写）
 - [ ] L02 Function Calling 深入
 - [ ] L03 ReAct 循环（面试核心）
 - [ ] L04 多工具与工具设计
