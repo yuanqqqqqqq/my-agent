@@ -137,22 +137,23 @@ PYTHONIOENCODING=utf-8 python research_agent/agent.py "大模型的幻觉问题�
 
 ```
 my-agent/
-├── research_agent/       ★ 研究助手本体
-│   ├── agent.py          主循环：规划 → 检索 → 报告 → 校验 → 打回重做
-│   ├── tools.py          联网搜索 / 抓正文 / 查知识库 / 计算，每件工具自带有效性校验
-│   ├── verify.py         确定性校验层（引用 / 数字 / 覆盖 / 空壳 / 私有限定词）
-│   └── eval.py           能力评测（有校验层 vs 无校验层）
-├── tests/test_verify.py  校验层单元测试
-├── l01_what_is_agent/    实现过程沉淀的各模块（从最小 Agent 到多智能体）
-├── l02_function_calling/
-├── l03_react_loop/
-├── l04_tool_design/
-├── l05_memory/
-├── l06_planning/
-├── l07_agentic_rag/
-├── l08_multi_agent/
-├── pyproject.toml        打包 + my-agent 命令行入口
-└── .github/workflows/    CI（语法 + 测试，不依赖 API Key）
+├── research_agent/          ★ 研究助手本体
+│   ├── agent.py             主循环：规划 → 检索 → 报告 → 校验 → 打回重做
+│   ├── tools.py             联网搜索 / 抓正文 / 查知识库 / 计算，每件工具自带有效性校验
+│   ├── verify.py            确定性校验层（引用 / 数字 / 覆盖 / 空壳 / 私有限定词）
+│   └── eval.py              能力评测（有校验层 vs 无校验层）
+├── tests/test_verify.py     校验层单元测试
+├── l01_what_is_agent/       最小 Agent：裸 LLM → 单工具 → 加循环
+├── l02_function_calling/    Function Calling：工具注册表 + 参数解析 + 错误兜底
+├── l03_react_loop/          ReAct 循环：Thought → Action → Observation
+├── l04_tool_design/         工具设计实验：名字 / 描述 / 参数名如何影响选择
+├── l05_memory/              记忆：全保留 / 截断 / 摘要压缩
+├── l06_planning/            规划：Plan-and-Execute vs ReAct 对照
+├── l07_agentic_rag/         Agentic RAG：把知识库检索包装成工具
+├── l08_multi_agent/         多智能体：接力传话 + 审查者流水线
+├── pyproject.toml           打包 + my-agent 命令行入口
+├── .github/workflows/       CI（语法 + 测试，不依赖 API Key）
+└── LICENSE                  MIT 许可
 ```
 
 ---
