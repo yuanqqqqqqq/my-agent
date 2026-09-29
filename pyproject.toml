@@ -13,7 +13,6 @@ authors = [{ name = "yuanqqqqqqq" }]
 keywords = ["agent", "llm", "function-calling", "react", "rag", "ai", "multi-agent"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
