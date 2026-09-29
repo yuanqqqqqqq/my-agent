@@ -7,7 +7,7 @@ httpx>=0.27                  # 显式绕开系统代理建客户端，见 resear
 ddgs>=9.0                    # 联网搜索（工具 search_web）
 requests>=2.31               # 抓网页正文（工具 fetch_page）
 beautifulsoup4>=4.12         # 同上，从 HTML 里提纯文本
-sniffio>=1.3                 # zhipuai 内部 import sniffio 却没声明它，显式补上（干净环境会 ModuleNotFoundError）
+sniffio>=1.3                 # zhipuai 的缺失依赖：内部 import 了却没声明，干净环境会 ModuleNotFoundError
 
 # ══ 本地依赖（不在 PyPI 上，要单独装） ══
 # research_agent 的 search_kb 复用你自己的 RAG 工具 my-rag。

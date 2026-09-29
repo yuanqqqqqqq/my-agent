@@ -22,8 +22,7 @@ dependencies = [
     "ddgs>=9.0",
     "requests>=2.31",
     "beautifulsoup4>=4.12",
-    # zhipuai 内部 import sniffio 却没声明它（干净环境会 ModuleNotFoundError），
-    # 本地不报错只是因为被 httpx/anyio 的旧版顺带装上了。这里显式补上。
+    # zhipuai 的缺失依赖：内部 import sniffio 却未声明，干净环境会 ModuleNotFoundError，这里显式补上。
     "sniffio>=1.3",
 ]
 
