@@ -137,23 +137,51 @@ PYTHONIOENCODING=utf-8 python research_agent/agent.py "大模型的幻觉问题�
 
 ```
 my-agent/
-├── research_agent/          ★ 研究助手本体
-│   ├── agent.py             主循环：规划 → 检索 → 报告 → 校验 → 打回重做
-│   ├── tools.py             联网搜索 / 抓正文 / 查知识库 / 计算，每件工具自带有效性校验
-│   ├── verify.py            确定性校验层（引用 / 数字 / 覆盖 / 空壳 / 私有限定词）
-│   └── eval.py              能力评测（有校验层 vs 无校验层）
-├── tests/test_verify.py     校验层单元测试
-├── l01_what_is_agent/       最小 Agent：裸 LLM → 单工具 → 加循环
-├── l02_function_calling/    Function Calling：工具注册表 + 参数解析 + 错误兜底
-├── l03_react_loop/          ReAct 循环：Thought → Action → Observation
-├── l04_tool_design/         工具设计实验：名字 / 描述 / 参数名如何影响选择
-├── l05_memory/              记忆：全保留 / 截断 / 摘要压缩
-├── l06_planning/            规划：Plan-and-Execute vs ReAct 对照
-├── l07_agentic_rag/         Agentic RAG：把知识库检索包装成工具
-├── l08_multi_agent/         多智能体：接力传话 + 审查者流水线
-├── pyproject.toml           打包 + my-agent 命令行入口
-├── .github/workflows/       CI（语法 + 测试，不依赖 API Key）
-└── LICENSE                  MIT 许可
+│
+├── research_agent/               ★ 毕业项目（L09）：研究助手本体
+│   ├── agent.py                  主循环：规划要点 → 多轮检索 → 生成报告 → 代码校验 → 不合格打回重做（最多 2 次）
+│   ├── tools.py                  工具层：search_web / fetch_page / search_kb / calculator，每件工具自带有效性校验
+│   ├── verify.py                 确定性校验层（纯代码、零 token）：引用真实性 / 数字可溯源 / 要点覆盖 / 空壳检测 / 私有限定词
+│   ├── eval.py                   能力评测：有校验层 vs 无校验层，用数字证明校验层有用
+│   └── __init__.py               包入口
+│
+├── tests/
+│   └── test_verify.py            校验层单元测试（20 条，纯函数、不联网、不要 Key，CI 可跑）
+│
+├── l01_what_is_agent/            认识 Agent：从「只会说的 LLM」到「会做的 Agent」
+│   ├── step1_llm_only.py         裸 LLM，先用 Python 算出标准答案，暴露它「只会说、不会做、且不知道自己不会」
+│   ├── step2_one_tool.py         Function Calling 单次调用（故意不写循环，只能处理一步任务）
+│   └── step3_agent_loop.py       套上循环 → 这才叫 Agent（ReAct 循环的雏形）
+│
+├── l02_function_calling/         Function Calling 深入：注册表 + 参数解析 + 错误兜底
+│   └── agent_l02.py              通用工具调度器（TOOL_REGISTRY）、非法 JSON 兜底、错误当观察结果喂回模型
+│
+├── l03_react_loop/               ReAct 循环的两种实现，用证伪看清本质
+│   ├── step1_fc_react.py         证伪：原生 FC + ReAct prompt，实测「调工具时 Thought 根本出不来」
+│   └── step2_text_react.py       经典 ReAct：不传 tools，Action 写成文本、自己解析执行
+│
+├── l04_tool_design/              工具设计实验台
+│   └── selection_lab.py          只改名字 / 描述 / 参数名 / 顺序中的一个变量，看模型第一次选哪个工具
+│
+├── l05_memory/                   记忆：模型没有记忆，传多少历史就「记得」多少
+│   └── memory_lab.py             三种窗口策略（全保留 / 截断 / 摘要压缩）+ 两个量化实验
+│
+├── l06_planning/                 规划：Plan-and-Execute vs ReAct 对照
+│   └── plan_vs_react.py          同一复杂任务跑两种策略，用数字看谁更好（含 v1 失败版 vs v2 修好版）
+│
+├── l07_agentic_rag/              Agentic RAG：把知识库检索包装成工具
+│   └── agentic_rag.py            把 my-rag 的 retrieve() 包成工具，对照「传统 RAG」与「Agentic RAG」
+│
+├── l08_multi_agent/              多智能体：接力传话 + 审查者流水线
+│   ├── relay_lab.py              接力传话：信息在哪一步丢？（损耗来自「删减」而非「传递次数」）
+│   └── pipeline.py               3-Agent 流水线：审查者真能挑出毛病吗？（LLM 审查者 = 橡皮图章）
+│
+├── pyproject.toml                打包配置 + my-agent 命令行入口 + dev 依赖
+├── requirements.txt              依赖清单（含 my-rag 本地安装说明）
+├── .env.example                  环境变量模板（ZHIPUAI_API_KEY）
+├── .gitignore                    忽略 .env / 缓存 / 评测产物
+├── .github/workflows/ci.yml      CI：语法检查 + 校验层测试（不依赖 API Key）
+└── LICENSE                       MIT 许可
 ```
 
 ---
