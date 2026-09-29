@@ -7,7 +7,25 @@ __pycache__/
 *.egg-info/
 .venv/
 venv/
+build/
+dist/
 
-# 编辑器
+# 测试与工具缓存
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 评测/运行产物（每次跑 eval 都会重新生成，不应进 git）
+research_agent/.eval_*.json
+*.r.md
+
+# 生成的报告（--out 默认落盘路径示例）
+report*.md
+
+# 编辑器 / 系统
 .vscode/
 .idea/
+.DS_Store
+Thumbs.db

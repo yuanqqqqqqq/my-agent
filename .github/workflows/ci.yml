@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  # ─────────────────────────────────────────────────────────
+  # 纯标准库即可跑的检查：语法 + 校验层单元测试（本项目立论依据）
+  # 不装任何依赖、不需要 API Key，几秒钟出结果。
+  # ─────────────────────────────────────────────────────────
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 语法检查（全部 py 文件）
+        run: python -m compileall -q l01_what_is_agent l02_function_calling l03_react_loop l04_tool_design l05_memory l06_planning l07_agentic_rag l08_multi_agent research_agent tests
+
+      - name: 校验层单元测试（20 条，纯函数不联网）
+        run: python tests/test_verify.py
+
+      - name: 校验层自检（verify.py 内置案例）
+        run: python research_agent/verify.py
+
+  # ─────────────────────────────────────────────────────────
+  # 装依赖、验证包能 import、工具自检能跑（不发起真实联网/API 调用）
+  # ─────────────────────────────────────────────────────────
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 安装本包及依赖
+        run: pip install -e .
+
+      - name: 包可 import（无真实 API 调用）
+        env:
+          # agent.py 在 import 时会建 ZhipuAI 客户端，需要一个非空的假 Key 占位
+          ZHIPUAI_API_KEY: ci-dummy-key
+        run: python -c "import research_agent.agent, research_agent.tools, research_agent.verify; print('imports ok')"
+
+      - name: 工具自检（calculate / 相关性，不联网）
+        run: python research_agent/tools.py

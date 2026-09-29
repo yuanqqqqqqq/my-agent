@@ -1,2 +1,20 @@
+# ══ 课程各节（l01 ~ l08）需要 ══
 zhipuai>=2.1.5
 python-dotenv>=1.0.0
+httpx>=0.27                  # 显式绕开系统代理建客户端，见 research_agent/agent.py
+
+# ══ 毕业项目 research_agent 额外需要 ══
+ddgs>=9.0                    # 联网搜索（工具 search_web）
+requests>=2.31               # 抓网页正文（工具 fetch_page）
+beautifulsoup4>=4.12         # 同上，从 HTML 里提纯文本
+
+# ══ 本地依赖（不在 PyPI 上，要单独装） ══
+# research_agent 的 search_kb 复用你自己的 RAG 工具 my-rag。
+# 先确保它在这个环境里可 import：
+#     cd ../my-rag && pip install -e .
+# 装好后 `python -c "import rag"` 不报错即可。
+# （search_kb 是懒加载的：不装 my-rag 也能跑联网研究和校验层，只是这个工具会提示你装）
+
+# ══ 也可以直接用 pyproject.toml 一键装 ══
+#     pip install -e .          # 装上面所有依赖 + `my-agent` 命令行入口
+#     pip install -e .[dev]     # 额外装 pytest（跑 tests 用，不装也能用 python tests/test_verify.py）
